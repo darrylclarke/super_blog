@@ -1,0 +1,9 @@
+body {
+	font-family: Verdana;
+}
+nav {
+	background-color: lightblue;
+	padding-top : 10px;
+	padding-bottom : 10px;
+	padding-left : 5px;
+}
