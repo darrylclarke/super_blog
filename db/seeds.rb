@@ -5,3 +5,16 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+100.times do 
+	title = Faker::Company.bs
+	body  = Faker::Lorem.paragraph
+	created_at = Time.now - (rand(30)).days
+	
+	Post.create	(	{	title:      title,
+						body:       body,
+						created_at: created_at
+					}
+				)
+end
+
+print Cowsay::say("Created 100 posts.")

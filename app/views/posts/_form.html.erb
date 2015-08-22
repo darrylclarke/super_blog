@@ -1,0 +1,27 @@
+<% if @post.errors.any? %>
+	<div class="form-messages">
+		<ul>
+			<% @post.errors.full_messages.each do |msg| %>
+				<li><%= msg %></li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+
+<%= form_for @post, html: {class: "form-horizontal"} do |f| %>
+	
+	<div class="form-group">
+		<%= f.label :title %>
+		<%= f.text_field :title, class: "form-control"%>
+	</div>
+	
+	<div class="form-group">
+		<%= f.label :body %>
+		<%= f.text_field :body, class: "form-control" %>
+	</div>
+
+	<div class = "form-group">	
+	<%= f.submit class: "btn btn-primary" %>
+	</div>
+	
+<% end %>
