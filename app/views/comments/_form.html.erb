@@ -1,0 +1,27 @@
+<% if @comment.errors.any? %>
+	<div class="form-messages">
+		<ul>
+			<% @comment.errors.full_messages.each do |msg| %>
+				<li><%= msg %></li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+
+<%= form_for @comment, html: {class: "form-horizontal"} do |f| %>
+	
+	<div class="form-group">
+		<%= f.label      :made_by %>
+		<%= f.text_field :made_by, class: "form-control"%>
+	</div>
+	
+	<div class="form-group">
+		<%= f.label      :body %>
+		<%= f.text_field :body, class: "form-control" %>
+	</div>
+
+	<div class = "form-group">	
+	<%= f.submit class: "btn btn-primary" %>
+	</div>
+	
+<% end %>

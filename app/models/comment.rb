@@ -1,4 +1,5 @@
 class Comment < ActiveRecord::Base
-		validates :body, presence: true, uniqueness: true
-
+	validates :made_by, presence:   true
+	validates :body,    presence:   true, 
+						uniqueness: true
 end

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get "/about" => "home#about"
   
   # CRUD for post
-  resources :posts
+  resources :posts, :comments
   
   root "home#home"
   
