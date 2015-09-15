@@ -1,7 +1,41 @@
 <h1>All Posts</h1>
 <hr>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<% if user_signed_in? %> <td>Favourite</td> <% end %>
+			<td>Date</td>
+			<td>Post</td>
+		</tr>
+	</thead>
+	<tbody>
+		
 <% @posts.each do |p| %>
-<div>
-	<%= link_to p.title, post_path(p) %>
-</div>
+	<tr>
+
+		<% if user_signed_in? %>
+			<td>
+			<% if current_user.has_made_post_a_favourite( p ) %>
+				<%= link_to fa_icon("star"),
+							post_favourite_path( p, p.favourite_for( current_user )),
+							class: "big-icon",
+							title: "Remove favourite status.",
+							method: :delete
+							%>
+			<% else %>
+				<%= link_to fa_icon("star-o"),
+							post_favourites_path( p ),
+							class: "big-icon",
+							title: "Add favourite status.",
+							method: :post
+							%>			
+			<% end %>
+			</td>
+		<% end %>
+		<td><%= p.created_at.to_s.gsub(' UTC', '') %></td>
+		<td><%= link_to p.title, post_path(p) %></td>
+	</tr>
 <% end %>	
+	</tbody>
+</table>

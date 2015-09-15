@@ -1,8 +1,107 @@
 <h1>Posts Details</h1>
 
-<h3><%= @post.title %></h3>
+<h3>
+<!----------------------------------------------------------------------------->
+<!--                Favourite status                                         -->
+<!----------------------------------------------------------------------------->
+<% if user_signed_in? %>
+	<% if current_user.has_made_post_a_favourite( @post ) %>
+		<%= link_to fa_icon("star"),
+					post_favourite_path( @post, @post.favourite_for( current_user )),
+					class: "big-icon",
+					title: "Remove favourite status.",
+					method: :delete
+					%>
+	<% else %>
+		<%= link_to fa_icon("star-o"),
+					post_favourites_path( @post ),
+					class: "big-icon",
+					title: "Add favourite status.",
+					method: :post
+					%>			
+	<% end %>
+<% end %>
+( <%= @post.favourites.count %> )
+<!----------------------------------------------------------------------------->
+<%= @post.title %></h3>
 <hr>
 <p><%= @post.body %></p>
 <hr>
+<p>By: <%= @post.user_name %> on <%= formatted_date( @post.created_at ) %></p>
+<br>
+<p>Category:  <%=@post.category_title %> </p>
+<br>
+<p>Tags:  <%=@post.tags.map { |x| x.name }.join(', ') %> </p>
+<br>
+<% if can? :edit, @post %>
 <%= link_to "Edit", edit_post_path( @post ), class: "btn btn-info" %>
+<% end %>
+<% if can? :destroy, @post %>
 <%= link_to "Delete", post_path( @post ), class: "btn btn-danger", method: :delete, data: {confirm: "Are you sure you want to delete this post?"} %>
+<% end %>
+
+<!----------------------------------------------------------------------------->
+<!--                       Voting                                            -->
+<!----------------------------------------------------------------------------->
+<% if user_signed_in? %>
+	<% if current_user_vote.nil? %>
+		
+		<%= link_to fa_icon("chevron-up"),   
+			post_votes_path( @post, {vote: {up: true}} ),  # This hash mimics params[] hash  
+			class: "big-icon", 
+			method: :post %>
+			
+		( <%= @post.votes_for_post %> )
+			
+		<%= link_to fa_icon("chevron-down"),   
+			post_votes_path( @post, {vote: {up: false}} ),  # This hash mimics params[] hash  
+			class: "big-icon", 
+			method: :post %>
+				
+	<% elsif current_user_vote.up? %>
+
+		<%= fa_icon "chevron-up", class: "big-icon disabled cant-up"%>
+			
+		( <%= @post.votes_for_post %> )
+			
+		<%= link_to fa_icon("chevron-down"),   
+			post_vote_path( @post, current_user_vote ),
+			class: "big-icon", 
+			method: :delete %>
+		
+	<% else %>
+
+		<%= link_to fa_icon("chevron-up"),   
+			post_vote_path( @post, current_user_vote ),
+			class: "big-icon", 
+			method: :delete %>
+
+		( <%= @post.votes_for_post %> )
+			
+		<%= fa_icon "chevron-down", class: "big-icon disabled cant-down"%>
+
+	<% end %>
+<% end %>
+
+<!----------------------------------------------------------------------------->
+<!--                       Comments                                          -->
+<!----------------------------------------------------------------------------->
+<h2>Make a comment:</h2>
+
+<%= render "/shared/standard_errors", object: @comment %>
+	
+<%= form_for [@post, @comment] do |f| %>
+	<div class="form-group">
+		<%= f.text_area :body, class: "form-control" %>
+		<%= f.submit "Create Comment", class: "btn btn-primary btn-small" %>
+	</div>
+<% end %>
+	
+<h2>Comments: <%= @post.comments.count %></h2>
+<% @post.get_comments_in_order.each do |c| %>
+	<div class="well">
+		 <!--id="<%#= dom_id(c) %>" >-->
+		<%= c.body %>
+		<%= link_to "Delete", post_comment_path(@post, c), class: "btn btn-small btn-danger", method: :delete, data: {confirm: "Are you sure?"} %>
+	</div>
+<% end %>

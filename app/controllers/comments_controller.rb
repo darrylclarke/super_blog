@@ -1,51 +1,36 @@
 class CommentsController < ApplicationController
   
-  before_action  :find_comment, only: [:show, :edit, :update, :destroy]
-  
-  def index
-    @comments = Comment.all
-  end
-
-  def new
-    @comment = Comment.new
-  end
-
+  before_action :authenticate_user!, except: []
+ 
   def create
-    @comment = Comment.new( comment_params )
+    @comment = Comment.new comment_params
+    @post    = Post.find params[:post_id]
+    @comment.post = @post
+    @comment.user = current_user
+    
     if @comment.save
-      redirect_to comment_path( @comment ), notice: "Comment Created."
+      comment_action = ActionController::Base.helpers.dom_id( @comment )
+      redirect_to   post_path( @post ), 
+                    anchor: :comment_action,
+                    notice: "Comment Created."
     else
-      flash[ :alert ] = "See errors below:"
-      render :new
+      flash[ :alert ] = "Comment wasn't created."
+      render "/posts/show"  # QUESTION - why does this work?
     end
   end
-  
-  def show
-  end
-
-  def edit
-  end
-
-  def update
-    if @comment.update comment_params
-      redirect_to comment_path( @comment )
-    else
-      render :edit
-    end
-  end
-  
+    
   def destroy
+    @post = Post.find( params[:post_id])
+    @comment = Comment.find params[:id]
     @comment.destroy
-    redirect_to comments_path
+    redirect_to post_path( @post ), notice: "Comment Deleted."
+    # TODO - Can I use the GUI to delete a comment made by someone else?
+    # TODO - Can I delete a comment made by someone else if I type the proper URL?
   end
   
 private
   
-  def find_comment
-    @comment = Comment.find params[:id]
-  end
-  
   def comment_params
-    params.require( :comment ).permit( :made_by, :body )  
+    params.require( :comment ).permit( :body )  
   end
 end
