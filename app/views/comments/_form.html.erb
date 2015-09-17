@@ -1,0 +1,6 @@
+<%= simple_form_for [@post, @comment], remote: true do |f| %>
+	<%= f.input :body, class: "form-control" %>
+	<div class = "form-group">	
+		<%= f.submit "Create Comment", class: "btn btn-primary btn-small" %>
+	</div>
+<% end %>

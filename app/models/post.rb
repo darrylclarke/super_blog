@@ -14,6 +14,8 @@ class Post < ActiveRecord::Base
 	has_many   :votes,    dependent: :destroy
 	has_many   :voters,   through:   :votes,    source: :user	
 
+	mount_uploader :attachment, AttachmentUploader
+	
 	def get_comments_in_order
 		comments.order( :created_at ).reverse
 	end	

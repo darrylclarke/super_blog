@@ -7,22 +7,31 @@ class VotesController < ApplicationController
 		vote = Vote.new vote_params
 		vote.user = current_user
 		vote.post = @post
-		if vote.save
-			redirect_to @post, notice: (vote_params[:up]=='true' ? "Voted up." : "Voted down.")
-		else
-			redirect_to @post, alert: "Vote not saved."
+		respond_to do |format|
+			if vote.save
+				format.html { redirect_to @post, notice: (vote_params[:up]=='true' ? "Voted up." : "Voted down.") }
+				format.js   { render }
+			else
+				format.html { redirect_to @post, alert: "Vote not saved." }
+				format.js   { render }
+			end		
 		end		
 	end
 	
 	def destroy
 		vote = Vote.find params[:id]
 		vote_was_up = vote.up?
-		if !(can? :destroy, vote)
-			redirect_to root_path, alert: "Access denied."
-		elsif vote.destroy
-			redirect_to @post, notice: (vote_was_up ? "Up vote removed." : "Down vote removed.")
-		else
-			redirect_to @post, alert: "Vote not removed."
+		respond_to do |format|
+			if !(can? :destroy, vote)
+				format.html { redirect_to root_path, alert: "Access denied."  }
+				format.js   {  render }
+			elsif vote.destroy
+				format.html { redirect_to @post, notice: (vote_was_up ? "Up vote removed." : "Down vote removed.")  }
+				format.js   {  render }
+			else
+				format.html { redirect_to @post, alert: "Vote not removed."  }
+				format.js   {  render }
+			end		
 		end		
 	end
 	

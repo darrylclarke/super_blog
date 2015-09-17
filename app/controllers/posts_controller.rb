@@ -60,6 +60,6 @@ private
   end
   
   def post_params
-    params.require( :post ).permit( :title, :body, :category_id, {tag_ids: []} )  
+    params.require( :post ).permit( :title, :body, :category_id, {tag_ids: []}, :attachment, :image )  
   end
 end
