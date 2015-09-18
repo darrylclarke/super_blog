@@ -1,0 +1,54 @@
+<h1>Posts Details</h1>
+
+<div class="row">
+<!----------------------------------------------------------------------------->
+<!--                Favourite status                                         -->
+<!----------------------------------------------------------------------------->
+<div class="col-md-1 text-center">
+	<% if user_signed_in? %>
+		<%= render "/favourites/favourite", mypost: @post, count: true %>
+	<% end %>
+
+<br>
+<!----------------------------------------------------------------------------->
+<!--                       Voting                                            -->
+<!----------------------------------------------------------------------------->
+<% if user_signed_in? %>
+	<%= render "/votes/vote" %>
+<% end %>
+</div>
+	<!----------------------------------------------------------------------------->
+<div class="col-md-11 " style="margin-top:0px;">
+	<h3><%= @post.title %></h3>
+	<p><strong><%= @post.body %></strong></p>
+	<hr>
+	<p>By: <%= @post.user_name %> on <%= formatted_date( @post.created_at ) %></p>
+	<p>Category:  <%=@post.category_title %> </p>
+	<p>Attachment: <%= link_to @post.attachment.url.to_s, @post.attachment.url, target: :blank %>
+	<p>Tags:  <%=@post.tags.map { |x| x.name }.join(', ') %> </p>
+	<% if can? :edit, @post %>
+	<%= link_to "Edit", edit_post_path( @post ), class: "btn btn-info" %>
+	<% end %>
+	<% if can? :destroy, @post %>
+	<%= link_to "Delete", post_path( @post ), class: "btn btn-danger", method: :delete, data: {confirm: "Are you sure you want to delete this post?"} %>
+	<% end %>
+</div>
+</div>
+
+
+<% if user_signed_in? %>
+	<!----------------------------------------------------------------------------->
+	<!--                       Comments                                          -->
+	<!----------------------------------------------------------------------------->
+	<h2>Make a comment:</h2>
+	
+	<%= render "/shared/standard_errors", object: @comment %>
+	<%= render "/comments/form" %>
+<% end %>
+	
+<h2>Comments: <%= @post.comments.count %></h2>
+<div class="comments">
+	<% @post.get_comments_in_order.each do |c| %>
+		<%= render "/comments/comment", c: c %>
+	<% end %>
+</div>

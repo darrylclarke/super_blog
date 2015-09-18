@@ -23,16 +23,17 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-
 gem 'faker'
 gem 'cowsay'
-gem "interactive_editor"
-gem "awesome_print"
-gem "hirb"
-
+gem "bootstrap-sass"
+gem "cancancan"
+gem "kaminari"
+gem "font-awesome-rails"
+gem "simple_form"
+gem "quiet_assets"
 
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -40,9 +41,21 @@ gem "hirb"
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'delayed_job_active_record'
+gem "delayed_job_web"
+gem "carrierwave"
+
+group :development do
+  gem "letter_opener"
+ end
+ 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+
+  gem "interactive_editor"
+  gem "awesome_print"
+  gem "hirb"
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

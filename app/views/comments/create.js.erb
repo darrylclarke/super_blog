@@ -1,0 +1,12 @@
+<% if @comment.errors.any? %>
+
+	$("#new_comment").replaceWith("<%= j render 'form' %>");
+
+<% else %>
+
+	$(".comments").prepend("<%= j render 'comment', c: @comment %>" );
+	<% @comment = Comment.new %>
+	$("#new_comment").replaceWith("<%= j render 'form' %>");
+
+
+<% end %>

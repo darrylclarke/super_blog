@@ -1,0 +1,15 @@
+<%#= render "/shared/standard_errors", object: @user %>	
+	
+<%= simple_form_for @user, url: users_path do |f| %>
+	<%= f.input :first_name %>
+	<%= f.input :last_name  %>
+	<%= f.input :email      %>
+	<% if @user.persisted? %>
+		<%= f.input :current_password, hint: "Enter your current password to save changes." %>		
+	<% end %>
+	<%= f.input :password              %>
+	<%= f.input :password_confirmation %>
+	<div class="form-group">
+		<%= f.submit class: "btn btn-primary" %>
+	</div>	
+<% end %>

@@ -1,0 +1,11 @@
+<div id="<%= dom_id(c) %>" class="well">
+	<%= c.body %>
+	<% if can? :destroy, @post %>
+		<%= link_to "Delete", 	post_comment_path(@post, c), 
+								class: "btn btn-small btn-danger", 
+								method: :delete, 
+								data: {confirm: "Are you sure?"},
+								remote: true
+								%>
+	<% end %>
+</div>

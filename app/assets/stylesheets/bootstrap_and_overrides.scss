@@ -1,0 +1,26 @@
+@import "font-awesome";
+@import "bootstrap";
+
+.simple_form {
+  abbr {
+    border-bottom: 0;
+  }
+  .check_boxes {
+    .checkbox {
+      display: inline-block;
+      margin-right: 10px;
+      input {
+        margin-left: -14px;
+      }
+    }
+  }
+}
+
+.show-page-inline {
+  display : inline;
+  float : left;
+}
+
+#post-heading {
+  margin-top:0px !important;
+}

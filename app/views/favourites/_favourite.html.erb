@@ -1,0 +1,28 @@
+<div id="favourite">
+	<br>
+	<!--<p> mp = <%= mypost %> </p>-->
+<% if user_signed_in? %>
+	<% if current_user.has_made_post_a_favourite( mypost ) %>
+	<!--<p> p2 = <%= mypost.favourite_for( current_user ) %> </p>-->
+		<%= link_to fa_icon("star"),
+					post_favourite_path( mypost, mypost.favourite_for( current_user )),
+					class: "big-icon",
+					title: "Remove favourite status.",
+					method: :delete,
+					remote: true
+					%>
+	<% else %>
+		<%= link_to fa_icon("star-o"),
+					post_favourites_path( mypost ),
+					class: "big-icon",
+					title: "Add favourite status.",
+					method: :post,
+					remote: true
+					%>			
+	<% end %>
+<% end %>
+<% if count %>
+<br>
+( <%= mypost.favourites.count %> )
+<% end %>
+</div>
