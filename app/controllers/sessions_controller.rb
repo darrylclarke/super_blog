@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
 		
 		if @user && @user.authenticate( params[:password] )
 			session[:user_id] = @user.id	
-			redirect_to (params[:redirect_uri].presence || root_path), notice: "Signed in successfully."
+			redirect_to (params[:redirect_uri].presence || new_post_path), notice: "Signed in successfully."
 		else
 			flash[:alert] = "Wrong credentials"
 			render :new

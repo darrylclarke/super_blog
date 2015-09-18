@@ -1,4 +1,5 @@
 <div id="favourite">
+	<br>
 	<!--<p> mp = <%= mypost %> </p>-->
 <% if user_signed_in? %>
 	<% if current_user.has_made_post_a_favourite( mypost ) %>
@@ -21,6 +22,7 @@
 	<% end %>
 <% end %>
 <% if count %>
+<br>
 ( <%= mypost.favourites.count %> )
 <% end %>
 </div>
